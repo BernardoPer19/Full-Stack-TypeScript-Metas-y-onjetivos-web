@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    // 📁 Estructura del proyecto
+    "rootDir": "./",               // Carpeta raíz del proyecto fuente
+    "outDir": "dist",              // Carpeta donde se guarda el JS compilado
+
+    // 🧠 Nivel del JavaScript de salida y sistema de módulos
+    "target": "ES2020",            // Versión moderna de JS (async/await, etc.)
+    "module": "commonjs",          // Módulos compatibles con Node.js
+    "moduleResolution": "node",    // Cómo resolver imports, usando lógica de Node.js
+
+    // ✅ Seguridad en el tipado
+    "strict": true,                // Activa todas las comprobaciones estrictas
+    "noUnusedLocals": true,        // Error si declarás una variable que no usás
+    "noUnusedParameters": true,    // Error si declarás parámetros que no se usan
+    "noImplicitReturns": true,     // Error si una función puede no devolver nada
+    "noFallthroughCasesInSwitch": true, // Error si te olvidás un `break` en switch
+
+    // ⚙️ Configuraciones útiles para evitar problemas
+    "esModuleInterop": true,       // Permite importar módulos CommonJS con `import x from`
+    "allowSyntheticDefaultImports": true, // Permite importar sin tener que usar `.default`
+    "resolveJsonModule": true,     // Permite importar archivos JSON
+    "skipLibCheck": true,          // Omite revisar los `.d.ts` de librerías externas
+    "isolatedModules": true,       // Cada archivo actúa como un módulo aislado
+    "types": ["node"],             // Carga los tipos de Node.js
+
+    // 🛑 Muy recomendado para detectar errores
+    "noEmitOnError": true    ,      // 🚨 No compila si hay errores (esto te faltaba)
+    "typeRoots": ["./src/types", "./node_modules/@types"] 
+  },
+  "include": ["src"],              // Solo compilar archivos dentro de /src
+  "exclude": ["node_modules"]      // Ignora esta carpeta
+}
