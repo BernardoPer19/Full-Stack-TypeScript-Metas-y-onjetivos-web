@@ -16,9 +16,7 @@ export const registerUser = async (
       res.status(400).json({ errors: validation.error.errors });
       return;
     }
-    const { name, email, password }: RegisterType = validation.data;
-
-    console.log(name, email, password);
+    const { nombre, email, password }: RegisterType = validation.data;
 
     const foundEmail = await AuthModel.getUserByEmail(email);
 
@@ -29,7 +27,7 @@ export const registerUser = async (
     const hashedPassword = await hashPassword(password);
 
     const newUser = await AuthModel.RegisterUser({
-      name,
+      nombre,
       email,
       password: hashedPassword,
     });
@@ -50,6 +48,7 @@ export const registerUser = async (
 
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+
   try {
     if (!email || !password) {
       return res
@@ -70,6 +69,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     const token = createToken(user);
+
     const options: CookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -82,7 +82,12 @@ export const loginUser = async (req: Request, res: Response) => {
       .cookie("access_token", token, options)
       .json({
         message: "Login exitoso",
-        user: { id: user.user_id, email: user.email, name: user.name },
+        user: {
+          id: user.user_id,
+          email: user.email,
+          nombre: user.nombre,
+          fecha_creacion: user.createAt,
+        },
       });
   } catch (error) {
     const err = error as Error;
@@ -94,7 +99,7 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const protectedRoute = (req: Request, res: Response) => {
-  const user = req.user as AuthType; // Asegúrate de hacer el casting a AuthType
+  const user = req.user as AuthType;
 
   if (!user) {
     return res.status(401).json({ message: "Usuario no autorizado" });

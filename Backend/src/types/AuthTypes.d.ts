@@ -1,9 +1,9 @@
 interface AuthType {
   user_id: number;
-  name: string;
+  nombre: string;
   email: string;
   password: string;
-  crateAt: Date;
+  createAt: Date;
 }
 
-export type RegisterType = Pick<AuthType, "name" | "email" | "password">;
+export type RegisterType = Pick<AuthType, "nombre" | "email" | "password">;

@@ -11,7 +11,7 @@ export class AuthModel {
       RETURNING *;
     `;
 
-    const values = [newUser.name, newUser.email, newUser.password];
+    const values = [newUser.nombre, newUser.email, newUser.password];
 
     const result: QueryResult<AuthType> = await pool.query(query, values);
     return result.rows[0];
@@ -20,6 +20,9 @@ export class AuthModel {
   static async getUserByEmail(email: string): Promise<AuthType | null> {
     const query = `SELECT * FROM user_tb WHERE email = $1`;
     const result: QueryResult<AuthType> = await pool.query(query, [email]);
+    result.rows.map((res) => {
+      console.log("aca", res.createAt);
+    });
 
     if (result.rows.length === 0) {
       return null;

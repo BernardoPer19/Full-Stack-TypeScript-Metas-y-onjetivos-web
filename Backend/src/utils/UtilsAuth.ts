@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs"; // Usar bcryptjs si estás trabajando con ese
-import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 import { JWT_SECRET_PASSWORD, SALT_ROUNDS } from "../config";
 import { AuthType } from "../types/AuthTypes";
@@ -25,16 +25,26 @@ const comparePassword = async (
 
 const createToken = (user: AuthType): string => {
   try {
-    return jwt.sign({ id: user.user_id }, JWT_SECRET_PASSWORD, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      {
+        id: user.user_id,
+        nombre: user.nombre,
+        email: user.email,
+        createAt: user.createAt,
+      },
+      JWT_SECRET_PASSWORD,
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    return token;
   } catch (error: any) {
     throw new Error(`Error generating token: ${error.message}`);
   }
 };
 
-// Agregar función para verificar el token
-const verifyToken = (token: string): any => {
+const verifyToken = (token: string): string | JwtPayload => {
   try {
     return jwt.verify(token, JWT_SECRET_PASSWORD);
   } catch (error: any) {
