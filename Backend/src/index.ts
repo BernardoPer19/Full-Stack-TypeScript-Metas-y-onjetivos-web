@@ -1,6 +1,8 @@
 import express from "express";
 import { AuthRoute } from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
+import UserRouter from "./routes/metas.routes";
+import { validateAuth } from "./middleware/validateAuth";
 
 const app = express();
 const PORT = 3000;
@@ -9,7 +11,8 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cookieParser());
 app.use("/", AuthRoute);
-// Start the server
+app.use("/metas", validateAuth, UserRouter);
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

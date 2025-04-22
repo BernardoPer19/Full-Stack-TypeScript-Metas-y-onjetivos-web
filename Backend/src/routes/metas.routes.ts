@@ -1,16 +1,12 @@
 import { Router } from "express";
-import {
-  getMetas,
-  getMetaById,
-  createMeta,
-  updateMeta,
-  deleteMeta,
-} from "../controllers/metas.controller";
+import { MetaController } from "../controllers/metas.controller";
 
-const MetasRouter = Router();
+const UserRouter = Router();
 
-MetasRouter.get("/metas", getMetas);
-MetasRouter.get("/metas/:id", getMetaById);
-MetasRouter.post("/metas", createMeta);
-MetasRouter.put("/metas/:id", updateMeta);
-MetasRouter.delete("/metas/:id", deleteMeta);
+UserRouter.get("/", MetaController.getAllMetas);
+UserRouter.get("/:id", MetaController.getMetaById);
+UserRouter.post("/", MetaController.createMeta);
+UserRouter.put("/:id", MetaController.updateMeta);
+UserRouter.delete("/:id", MetaController.deleteMeta);
+
+export default UserRouter;

@@ -33,3 +33,5 @@ export interface MetaDB {
 }
 
 export type UserId = Pick<MetaDB, "user_id">;
+
+export type UpdateData = Partial<MetaDB>;

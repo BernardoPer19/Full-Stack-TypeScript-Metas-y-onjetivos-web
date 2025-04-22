@@ -27,7 +27,7 @@ const createToken = (user: AuthType): string => {
   try {
     const token = jwt.sign(
       {
-        id: user.user_id,
+        user_id: user.user_id,
         nombre: user.nombre,
         email: user.email,
         createAt: user.createAt,
