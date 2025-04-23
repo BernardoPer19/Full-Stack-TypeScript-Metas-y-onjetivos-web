@@ -7,3 +7,4 @@ export interface AuthType {
 }
 
 export type RegisterType = Pick<AuthType, "nombre" | "email" | "password">;
+export type PublicUserType = Omit<AuthType, "password">;

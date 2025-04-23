@@ -1,6 +1,6 @@
 import { CookieOptions, Request, Response } from "express";
 import { AuthModel } from "../models/auth.model";
-import { AuthType, RegisterType } from "../types/AuthTypes";
+import { AuthType, PublicUserType, RegisterType } from "../types/AuthTypes";
 import { userRegistrationSchema } from "../schemas/AuthSchema";
 import { comparePassword, createToken, hashPassword } from "../utils/UtilsAuth";
 
@@ -106,4 +106,34 @@ export const protectedRoute = (req: Request, res: Response) => {
   }
 
   return res.status(200).json({ message: "Usuario autorizado", user });
+};
+
+export const logout = (_req: Request, res: Response) => {
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: true, // pon esto solo si usas HTTPS
+    sameSite: "strict",
+  });
+
+  return res.status(200).json({ message: "Logged out successfully" });
+};
+
+export const verify = async (req: Request, res: Response) => {
+  try {
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const userFound = await AuthModel.getUserByEmail(req.user.email);
+
+    if (!userFound) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const { password, ...userWithoutPassword } = userFound;
+
+    res.json({ message: "Usuario autenticado", user: userWithoutPassword });
+  } catch (error) {
+    return res.status(500).json({ message: "Error en la autenticación" });
+  }
 };
