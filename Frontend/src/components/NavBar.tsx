@@ -1,15 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContextxt";
 
-type NavBarProps = {
-  isAuthenticated: boolean;
-  setIsAuthenticated: (auth: boolean) => void;
-};
+function NavBar() {
+  const { isAuthenticate, setIsAuthenticate } = useAuthContext();
 
-function NavBar({ isAuthenticated, setIsAuthenticated }: NavBarProps) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    setIsAuthenticate(false);
     navigate("/");
   };
 
@@ -18,7 +16,7 @@ function NavBar({ isAuthenticated, setIsAuthenticated }: NavBarProps) {
       <div className="text-xl font-bold">🌟 My Goals App</div>
 
       <div className="space-x-4">
-        {isAuthenticated ? (
+        {isAuthenticate ? (
           <>
             <Link
               to="/goals"

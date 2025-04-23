@@ -68,10 +68,10 @@ const useAuth = () => {
       if (token) {
         try {
           await verifyUser();
-          setIsAuthenticate(true); // Si no hubo error, consideramos que la sesión es válida
+          setIsAuthenticate(true);
         } catch (error) {
           setAuthError("Token inválido o expirado.");
-          setIsAuthenticate(false); // Si hubo error, el token no es válido
+          setIsAuthenticate(false);
         }
       } else {
         setIsAuthenticate(false); // Si no hay token, no está autenticado
@@ -81,6 +81,7 @@ const useAuth = () => {
 
     verifyUser();
   }, []);
+
   return {
     user,
     isAuthenticate,
@@ -89,6 +90,7 @@ const useAuth = () => {
     registerUser,
     loginUser,
     logout,
+    setIsAuthenticate,
   };
 };
 

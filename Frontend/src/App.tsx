@@ -1,25 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import GoalsPage from "./pages/GoalsPage";
 import FormGoalsPage from "./pages/FormGoalsPage";
 import NavBar from "./components/NavBar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
   return (
     <BrowserRouter>
-      <NavBar
-        isAuthenticated={isAuthenticated}
-        setIsAuthenticated={setIsAuthenticated}
-      />
+      <NavBar />
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/goals" element={<GoalsPage />} />
-        <Route path="/form-goals" element={<FormGoalsPage />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/form-goals" element={<FormGoalsPage />} />
+          <Route path="/goals" element={<GoalsPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
