@@ -1,9 +1,11 @@
-import React from 'react'
+import { LoginForm } from "../components/LoginForm";
 
 function LoginPage() {
   return (
-    <div>LoginPage</div>
-  )
+    <section className="h-[80vh]  w-full flex justify-center items-center">
+      <LoginForm />
+    </section>
+  );
 }
 
-export default LoginPage
+export default LoginPage;

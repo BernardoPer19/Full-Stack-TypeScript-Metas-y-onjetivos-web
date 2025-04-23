@@ -1,6 +1,6 @@
 import { CookieOptions, Request, Response } from "express";
 import { AuthModel } from "../models/auth.model";
-import { AuthType, PublicUserType, RegisterType } from "../types/AuthTypes";
+import { AuthType, RegisterType } from "../types/AuthTypes";
 import { userRegistrationSchema } from "../schemas/AuthSchema";
 import { comparePassword, createToken, hashPassword } from "../utils/UtilsAuth";
 
@@ -10,6 +10,8 @@ export const registerUser = async (
   res: Response
 ): Promise<void> => {
   try {
+    console.log(req.body);
+
     const validation = userRegistrationSchema.safeParse(req.body);
 
     if (!validation.success) {

@@ -9,17 +9,19 @@ const useAuth = () => {
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const token = Cookies.get("access_token");
-    if (token) {
-      setIsAuthenticate(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = Cookies.get("access_token");
+  //   if (token) {
+  //     setIsAuthenticate(true);
+  //   }
+  // }, []);
 
   const registerUser = async (data: RegisterUserType): Promise<void> => {
     setLoading(true);
     try {
+      console.log(data);
       const response = await RegisterRequest(data);
+
       if (response) {
         setUser(response);
         setIsAuthenticate(true);

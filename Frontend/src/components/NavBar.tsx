@@ -40,7 +40,7 @@ function NavBar() {
         ) : (
           <>
             <Link
-              to="/"
+              to="/login"
               className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 font-medium transition"
             >
               Login
