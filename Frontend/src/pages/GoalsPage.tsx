@@ -1,8 +1,11 @@
 import React from 'react'
+import AllList from '../components/AllList'
 
 function GoalsPage() {
   return (
-    <div>GoalsPage</div>
+    <div>
+      <AllList/>
+    </div>
   )
 }
 

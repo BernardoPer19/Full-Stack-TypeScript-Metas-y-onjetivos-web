@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 export const getAllMetas = async (): Promise<MetaFrontend[]> => {
   try {
-    const response = await axios.get("/meta");
+    const response = await axios.get("/metas");
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -33,8 +33,6 @@ export const createMeta = async (
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error.message);
-    
     console.error("Error creating meta:", error);
     throw error;
   }

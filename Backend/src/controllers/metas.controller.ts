@@ -6,7 +6,6 @@ export class MetaController {
   static async getAllMetas(req: Request, res: Response): Promise<void> {
     try {
       const user_id = req.user?.user_id;
-      console.log("a", req.user?.user_id);
 
       if (!user_id) {
         res.status(400).json({ message: "User ID is missing or invalid" });
