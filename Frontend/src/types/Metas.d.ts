@@ -18,3 +18,6 @@ export interface MetaFrontend {
   etiqueta: string;
   user_id?: number;
 }
+
+export type GoalsDataType = Omit<MetaFrontend, "metas_id" | "user_id">;
+export type UpdateGoalsType = Partial<GoalsDataType>

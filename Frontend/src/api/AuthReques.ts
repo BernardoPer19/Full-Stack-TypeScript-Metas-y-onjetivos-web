@@ -1,5 +1,5 @@
-import { LoginUserType, RegisterUserType, UserType } from "../types/AuthTypes";
 import axios from "../api/axios";
+import { LoginUserType, RegisterUserType, UserType } from "../types/AuthTypes";
 import { AxiosError } from "axios";
 
 export const RegisterRequest = async (
@@ -9,13 +9,10 @@ export const RegisterRequest = async (
     const response = await axios.post<UserType>("/register", data);
     return response.data;
   } catch (error) {
-    console.log(error);
-
     if (error instanceof AxiosError && error.response) {
       const backendMessage = error.response.data?.errors || error.message;
       throw new Error(backendMessage);
     }
-    console.log(error);
     throw new Error("Error desconocido al registrar el usuario.");
   }
 };
@@ -27,8 +24,10 @@ export const loginUserRequest = async (
     const response = await axios.post("/login", data);
     return response.data;
   } catch (error) {
+    console.log(error);
+
     if (error instanceof AxiosError && error.response) {
-      const backendMessage = error.response.data?.errors || error.message;
+      const backendMessage = error.response.data?.message || error.message;
       throw new Error(backendMessage);
     }
 
@@ -45,7 +44,7 @@ export const logoutRequest = async () => {
   }
 };
 
-export const verifyUser = async (): Promise<UserType> => {
+export const verifyUserRequest = async (): Promise<UserType> => {
   try {
     const response = await axios.get("/verify");
     return response.data.user;

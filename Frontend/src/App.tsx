@@ -1,11 +1,11 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import GoalsPage from "./pages/GoalsPage";
-import FormGoalsPage from "./pages/FormGoalsPage";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import FormGoalsPage from "./pages/FormGoalsPage";
+import GoalsPage from "./pages/GoalsPage";
+import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
+import RegisterPage from "./pages/RegisterPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (

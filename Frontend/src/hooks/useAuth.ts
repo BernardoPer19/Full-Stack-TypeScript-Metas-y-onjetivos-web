@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { LoginUserType, RegisterUserType, UserType } from "../types/AuthTypes";
 import Cookies from "js-cookie";
-import { loginUserRequest, RegisterRequest } from "../api/AuthReques";
+import {
+  loginUserRequest,
+  RegisterRequest,
+  verifyUserRequest,
+  logoutRequest,
+} from "../api/AuthReques";
 
 const useAuth = () => {
   const [user, setUser] = useState<UserType | null>(null);
@@ -21,7 +26,6 @@ const useAuth = () => {
   const registerUser = async (data: RegisterUserType): Promise<void> => {
     setLoading(true);
     try {
-      console.log(data);
       const response = await RegisterRequest(data);
 
       if (response) {
@@ -60,31 +64,27 @@ const useAuth = () => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await logoutRequest();
     setUser(null);
     setIsAuthenticate(false);
     Cookies.remove("access_token");
   };
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      const token = Cookies.get("access_token");
-      if (token) {
-        try {
-          await verifyUser();
-          setIsAuthenticate(true);
-        } catch (error) {
-          setAuthError("Token inválido o expirado.");
-          setIsAuthenticate(false);
-        }
-      } else {
-        setIsAuthenticate(false); 
+  const verifyUser = async () => {
+    const token = Cookies.get("access_token");
+    if (token) {
+      try {
+        const response = await verifyUserRequest();
+        setUser(response);
+        setIsAuthenticate(true);
+      } catch (error) {
+        setAuthError("Token inválido o expirado.");
+        setIsAuthenticate(false);
+        setUser(null);
       }
-      setLoading(false);
-    };
-
-    verifyUser();
-  }, []);
+    }
+  };
 
   return {
     user,
@@ -93,7 +93,10 @@ const useAuth = () => {
     loading,
     registerUser,
     loginUser,
+    setUser,
     logout,
+    verifyUser,
+    setLoading,
     setIsAuthenticate,
   };
 };

@@ -10,7 +10,6 @@ export const validateAuth = (
   next: NextFunction
 ) => {
   try {
-    console.log(req.body, "..");
     const token = req.cookies.access_token;
     
     if (!token) {

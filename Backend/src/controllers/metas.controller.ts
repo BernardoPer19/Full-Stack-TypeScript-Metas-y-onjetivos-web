@@ -44,6 +44,8 @@ export class MetaController {
 
   static async createMeta(req: Request, res: Response): Promise<void> {
     try {
+      console.log(req.body);
+      
       const user_id = req.user?.user_id;
       const metaData = req.body;
 

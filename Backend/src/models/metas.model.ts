@@ -39,44 +39,49 @@ export class MetaService {
   }
 
   async create(meta: MetaFrontend): Promise<MetaDB> {
-    const prioridad_id = await getIdByName(
-      "prioridad_tb",
-      "prioridad_id",
-      meta.prioridad
-    );
-    const completado_id = await getIdByName(
-      "completado_tb",
-      "completado_id",
-      meta.completado
-    );
-    const etiqueta_id = await getIdByName(
-      "etiqueta_tb",
-      "etiqueta_id",
-      meta.etiqueta
-    );
+    try {
+      const prioridad_id = await getIdByName(
+        "prioridad_tb",
+        "prioridad_id",
+        meta.prioridad
+      );
+      const completado_id = await getIdByName(
+        "completado_tb",
+        "completado_id",
+        meta.completado
+      );
+      const etiqueta_id = await getIdByName(
+        "etiqueta_tb",
+        "etiqueta_id",
+        meta.etiqueta
+      );
 
-    const query = `
-      INSERT INTO metas_tb (
-        nombre_meta, descripcion, fecha_creacion, beneficio, 
-        tiempo_de_realizacion, user_id, prioridad_id, completado_id, etiqueta_id
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-      RETURNING *
-    `;
+      const query = `
+        INSERT INTO metas_tb (
+          nombre_meta, descripcion, fecha_creacion, beneficio, 
+          tiempo_de_realizacion, user_id, prioridad_id, completado_id, etiqueta_id
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING *
+      `;
 
-    const values = [
-      meta.nombre_meta,
-      meta.descripcion,
-      meta.fecha_creacion,
-      meta.beneficio,
-      meta.tiempo_de_realizacion,
-      meta.user_id,
-      prioridad_id,
-      completado_id,
-      etiqueta_id,
-    ];
+      const values = [
+        meta.nombre_meta,
+        meta.descripcion,
+        meta.fecha_creacion,
+        meta.beneficio,
+        meta.tiempo_de_realizacion,
+        meta.user_id,
+        prioridad_id,
+        completado_id,
+        etiqueta_id,
+      ];
 
-    const result = await pool.query(query, values);
-    return result.rows[0];
+      const result = await pool.query(query, values);
+      return result.rows[0];
+    } catch (error) {
+      console.error("Error al crear en la DB:", error);
+      throw new Error(`Error al crear la meta: ${error.message}`);
+    }
   }
 
   async update(

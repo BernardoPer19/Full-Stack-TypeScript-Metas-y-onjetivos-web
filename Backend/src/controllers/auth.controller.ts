@@ -72,9 +72,9 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const options: CookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 1000 * 60 * 60,
+      secure:false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     };
 
     return res
