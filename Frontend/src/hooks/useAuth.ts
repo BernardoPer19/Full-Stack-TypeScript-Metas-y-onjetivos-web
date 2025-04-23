@@ -6,15 +6,17 @@ import { loginUserRequest, RegisterRequest } from "../api/AuthReques";
 const useAuth = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [isAuthenticate, setIsAuthenticate] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const token = Cookies.get("access_token");
-  //   if (token) {
-  //     setIsAuthenticate(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (authError.length > 0) {
+      const timer = setTimeout(() => {
+        setAuthError("");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [authError]);
 
   const registerUser = async (data: RegisterUserType): Promise<void> => {
     setLoading(true);
@@ -76,7 +78,7 @@ const useAuth = () => {
           setIsAuthenticate(false);
         }
       } else {
-        setIsAuthenticate(false); // Si no hay token, no está autenticado
+        setIsAuthenticate(false); 
       }
       setLoading(false);
     };

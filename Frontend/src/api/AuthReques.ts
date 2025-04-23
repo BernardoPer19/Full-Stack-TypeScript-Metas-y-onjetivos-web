@@ -6,15 +6,13 @@ export const RegisterRequest = async (
   data: RegisterUserType
 ): Promise<UserType> => {
   try {
-    console.log(data);
     const response = await axios.post<UserType>("/register", data);
-
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      const backendMessage = error.response.data?.message || error.message;
-      console.log(backendMessage);
+    console.log(error);
 
+    if (error instanceof AxiosError && error.response) {
+      const backendMessage = error.response.data?.errors || error.message;
       throw new Error(backendMessage);
     }
     console.log(error);
@@ -30,7 +28,7 @@ export const loginUserRequest = async (
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
-      const backendMessage = error.response.data?.message || error.message;
+      const backendMessage = error.response.data?.errors || error.message;
       throw new Error(backendMessage);
     }
 

@@ -10,8 +10,6 @@ export const registerUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    console.log(req.body);
-
     const validation = userRegistrationSchema.safeParse(req.body);
 
     if (!validation.success) {
@@ -23,7 +21,7 @@ export const registerUser = async (
     const foundEmail = await AuthModel.getUserByEmail(email);
 
     if (foundEmail) {
-      res.status(400).json({ errors: "El email ya fue registrado" });
+      res.status(404).json({ errors: "El email ya fue registrado" });
       return;
     }
     const hashedPassword = await hashPassword(password);
