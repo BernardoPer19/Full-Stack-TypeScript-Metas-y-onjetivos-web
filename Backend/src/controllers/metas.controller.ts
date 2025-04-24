@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { MetaService } from "../models/metas.model";
+import { getIdByName } from "../utils/MetasUtils";
+import { MetaDB, MetaFrontend } from "../types/MetasTypes";
 const metaService = new MetaService();
 
 export class MetaController {
@@ -44,7 +46,7 @@ export class MetaController {
   static async createMeta(req: Request, res: Response): Promise<void> {
     try {
       console.log(req.body);
-      
+
       const user_id = req.user?.user_id;
       const metaData = req.body;
 
@@ -64,16 +66,43 @@ export class MetaController {
     try {
       const { id } = req.params;
       const metaData = req.body;
-      const user_id = req.user?.user_id; // Obtener el user_id del usuario autenticado
+      const user_id = req.user?.user_id;
 
       if (!user_id) {
         res.status(400).json({ message: "User ID is missing or invalid" });
         return;
       }
 
+      const { prioridad, completado, etiqueta, ...rest } =
+        metaData as MetaFrontend;
+
+      const prioridad_id = await getIdByName(
+        "prioridad_tb",
+        "prioridad_id",
+        prioridad
+      );
+      const completado_id = await getIdByName(
+        "completado_tb",
+        "completado_id",
+        completado
+      );
+      const etiqueta_id = await getIdByName(
+        "etiqueta_tb",
+        "etiqueta_id",
+        etiqueta
+      );
+
+      // Unir todo en un objeto compatible con MetaDB
+      const metaToUpdate: Partial<MetaDB> = {
+        ...rest,
+        prioridad_id,
+        completado_id,
+        etiqueta_id,
+      };
+
       const updatedMeta = await metaService.update(
         Number(id),
-        metaData,
+        metaToUpdate,
         user_id
       );
 
@@ -84,6 +113,7 @@ export class MetaController {
 
       res.status(200).json(updatedMeta);
     } catch (error) {
+      console.error("Error in updateMeta:", error);
       res.status(500).json({ message: "Error updating meta", error });
     }
   }
@@ -98,7 +128,7 @@ export class MetaController {
         return;
       }
 
-      const deletedMeta = await metaService.delete(Number(id)); // Llamada sin user_id
+      const deletedMeta = await metaService.delete(Number(id));
       if (!deletedMeta) {
         res.status(404).json({ message: "Meta not found for deletion" });
         return;

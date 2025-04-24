@@ -43,7 +43,7 @@ export const updateMeta = async (
   metaData: UpdateGoalsType
 ): Promise<MetaFrontend> => {
   try {
-    const response = await axios.put(`$/${id}`, metaData);
+    const response = await axios.put(`metas/${id}`, metaData);
     return response.data;
   } catch (error) {
     console.error(`Error updating meta with ID ${id}:`, error);

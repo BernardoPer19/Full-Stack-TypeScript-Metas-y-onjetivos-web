@@ -96,12 +96,14 @@ export class MetaService {
     }
 
     const fields = Object.keys(meta)
-      .map((key, index) => `${key} = $${index + 2}`)
+      .map((key, index) => `${key} = $${index + 2}`) 
       .join(", ");
 
     const values = Object.values(meta);
-    const query = `UPDATE metas_tb SET ${fields} WHERE metas_id = $1 AND user_id = $2 RETURNING *`;
-    const result = await pool.query(query, [meta_id, user_id, ...values]);
+    const query = `UPDATE metas_tb SET ${fields} WHERE metas_id = $1 AND user_id = $${
+      values.length + 2
+    } RETURNING *`;
+    const result = await pool.query(query, [meta_id, ...values, user_id]);
 
     return result.rows[0] || null;
   }
@@ -112,3 +114,8 @@ export class MetaService {
     return result.rows[0] || null;
   }
 }
+
+
+
+
+

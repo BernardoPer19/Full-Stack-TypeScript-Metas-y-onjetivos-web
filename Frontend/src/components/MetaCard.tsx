@@ -4,15 +4,14 @@ import { Pencil, Trash2 } from "lucide-react";
 
 interface Props {
   meta: MetaFrontend;
-  onDelete?: () => void;
   onEdit?: () => void;
 }
 
-const MetaCard: React.FC<Props> = ({ meta }) => {
+const MetaCard: React.FC<Props> = ({ meta , onEdit}) => {
   const { remove } = useCRUDGoals();
 
   return (
-    <div className="group relative w-full max-w-lg p-6 bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300 ease-in-out space-y-4">
+    <div className="group relative w-full max-w-lg p-6 bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300 ease-in-out space-y-4 m-auto ">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold text-gray-800 group-hover:text-indigo-600 transition">
           {meta.nombre_meta}
@@ -65,12 +64,15 @@ const MetaCard: React.FC<Props> = ({ meta }) => {
       </div>
 
       <div className="flex justify-end gap-2 pt-4 border-t border-gray-100 mt-4">
-        <button
-          // onClick={onEdit}
-          className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition"
-        >
-          <Pencil className="w-4 h-4" /> Editar
-        </button>
+        {onEdit && (
+          <button
+            onClick={onEdit}
+            className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition"
+          >
+            <Pencil className="w-4 h-4" /> Editar
+          </button>
+        )}
+
         <button
           onClick={() => {
             if (meta.metas_id !== undefined) {
