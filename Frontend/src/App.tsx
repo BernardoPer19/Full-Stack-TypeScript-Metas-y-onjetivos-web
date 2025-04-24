@@ -1,5 +1,6 @@
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { GoalsProvider } from "./context/GoalsContext";
 import FormGoalsPage from "./pages/FormGoalsPage";
 import GoalsPage from "./pages/GoalsPage";
 import LoginPage from "./pages/LoginPage";
@@ -10,17 +11,19 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <GoalsProvider>
+        <NavBar />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/form-goals" element={<FormGoalsPage />} />
-          <Route path="/goals" element={<GoalsPage />} />
-        </Route>
-      </Routes>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/form-goals" element={<FormGoalsPage />} />
+            <Route path="/goals" element={<GoalsPage />} />
+          </Route>
+        </Routes>
+      </GoalsProvider>
     </BrowserRouter>
   );
 }
