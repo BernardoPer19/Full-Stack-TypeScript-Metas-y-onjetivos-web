@@ -39,7 +39,7 @@ export const createMeta = async (
 };
 
 export const updateMeta = async (
-  id: string,
+  id: number,
   metaData: UpdateGoalsType
 ): Promise<MetaFrontend> => {
   try {
@@ -51,9 +51,9 @@ export const updateMeta = async (
   }
 };
 
-export const deleteMeta = async (id: string): Promise<void> => {
+export const deleteMeta = async (id: number): Promise<void> => {
   try {
-    const response = await axios.delete(`/${id}`);
+    const response = await axios.delete(`metas/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error deleting meta with ID ${id}:`, error);

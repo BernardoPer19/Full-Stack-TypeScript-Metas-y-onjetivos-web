@@ -1,6 +1,6 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { GoalsDataType } from "../types/Metas";
 import { FormData, metaSchema } from "../validations/ValidateGolas";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -23,20 +23,24 @@ const GoalsForm: React.FC<{ onSubmit: (data: GoalsDataType) => void }> = ({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(metaSchema),
   });
+  const onFormSubmit = (data: FormData) => {
+    onSubmit(data);
+    reset();
+  };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onFormSubmit)}
       className="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-lg"
     >
       <h2 className="text-2xl font-bold mb-6 text-center">Crear Nueva Meta</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Nombre */}
         <div>
           <label className="block font-semibold mb-1">Nombre</label>
           <input
@@ -48,7 +52,6 @@ const GoalsForm: React.FC<{ onSubmit: (data: GoalsDataType) => void }> = ({
           )}
         </div>
 
-        {/* Fecha */}
         <div>
           <label className="block font-semibold mb-1">Fecha de Creación</label>
           <input
@@ -63,7 +66,6 @@ const GoalsForm: React.FC<{ onSubmit: (data: GoalsDataType) => void }> = ({
           )}
         </div>
 
-        {/* Beneficio */}
         <div>
           <label className="block font-semibold mb-1">Beneficio</label>
           <input
@@ -75,7 +77,6 @@ const GoalsForm: React.FC<{ onSubmit: (data: GoalsDataType) => void }> = ({
           )}
         </div>
 
-        {/* Tiempo */}
         <div>
           <label className="block font-semibold mb-1">
             Tiempo de Realización
@@ -91,7 +92,6 @@ const GoalsForm: React.FC<{ onSubmit: (data: GoalsDataType) => void }> = ({
           )}
         </div>
 
-        {/* Prioridad */}
         <div>
           <label className="block font-semibold mb-1">Prioridad</label>
           <select
@@ -144,7 +144,6 @@ const GoalsForm: React.FC<{ onSubmit: (data: GoalsDataType) => void }> = ({
           )}
         </div>
 
-        {/* Descripción (full width) */}
         <div className="md:col-span-2">
           <label className="block font-semibold mb-1">Descripción</label>
           <textarea

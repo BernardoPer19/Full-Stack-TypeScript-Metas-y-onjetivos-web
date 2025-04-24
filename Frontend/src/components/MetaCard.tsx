@@ -1,33 +1,43 @@
+import { useCRUDGoals } from "../hooks/useFetchingData";
 import { MetaFrontend } from "../types/Metas";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface Props {
   meta: MetaFrontend;
+  onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 const MetaCard: React.FC<Props> = ({ meta }) => {
-  return (
-    <div className="max-w-md w-full p-6 bg-white rounded-2xl shadow-lg border border-gray-200">
-      <h2 className="text-xl font-bold text-gray-800 mb-2">
-        {meta.nombre_meta}
-      </h2>
-      <p className="text-sm text-gray-500 mb-4">{meta.descripcion}</p>
+  const { remove } = useCRUDGoals();
 
-      <div className="text-sm text-gray-700 space-y-1">
-        <p>
-          <span className="font-medium">Fecha de creación:</span>{" "}
-          {meta.fecha_creacion}
-        </p>
-        <p>
-          <span className="font-medium">Beneficio:</span> {meta.beneficio}
-        </p>
-        <p>
-          <span className="font-medium">Tiempo estimado:</span>{" "}
+  return (
+    <div className="group relative w-full max-w-lg p-6 bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300 ease-in-out space-y-4">
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold text-gray-800 group-hover:text-indigo-600 transition">
+          {meta.nombre_meta}
+        </h2>
+        <p className="text-sm text-gray-500">{meta.descripcion}</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
+        <div>
+          <span className="font-medium">Fecha:</span> {meta.fecha_creacion}
+        </div>
+        <div>
+          <span className="font-medium">Tiempo:</span>{" "}
           {meta.tiempo_de_realizacion}
-        </p>
-        <p>
+        </div>
+        <div>
+          <span className="font-medium">Beneficio:</span> {meta.beneficio}
+        </div>
+        <div>
+          <span className="font-medium">Etiqueta:</span> #{meta.etiqueta}
+        </div>
+        <div>
           <span className="font-medium">Prioridad:</span>{" "}
           <span
-            className={`px-2 py-1 rounded text-white ${
+            className={`px-2 py-1 rounded-full text-white text-xs ${
               meta.prioridad === "Alta"
                 ? "bg-red-500"
                 : meta.prioridad === "Media"
@@ -37,11 +47,11 @@ const MetaCard: React.FC<Props> = ({ meta }) => {
           >
             {meta.prioridad}
           </span>
-        </p>
-        <p>
+        </div>
+        <div>
           <span className="font-medium">Estado:</span>{" "}
           <span
-            className={`px-2 py-1 rounded text-white ${
+            className={`px-2 py-1 rounded-full text-white text-xs ${
               meta.completado === "Completada"
                 ? "bg-green-600"
                 : meta.completado === "En Progreso"
@@ -51,10 +61,28 @@ const MetaCard: React.FC<Props> = ({ meta }) => {
           >
             {meta.completado}
           </span>
-        </p>
-        <p>
-          <span className="font-medium">Etiqueta:</span> #{meta.etiqueta}
-        </p>
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-2 pt-4 border-t border-gray-100 mt-4">
+        <button
+          // onClick={onEdit}
+          className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition"
+        >
+          <Pencil className="w-4 h-4" /> Editar
+        </button>
+        <button
+          onClick={() => {
+            if (meta.metas_id !== undefined) {
+              remove.deleteGoal(meta.metas_id);
+            } else {
+              console.error("El ID de la meta es undefined");
+            }
+          }}
+          className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-xl transition"
+        >
+          <Trash2 className="w-4 h-4" /> Eliminar
+        </button>
       </div>
     </div>
   );

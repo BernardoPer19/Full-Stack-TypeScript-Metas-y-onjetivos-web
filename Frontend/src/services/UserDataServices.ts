@@ -55,7 +55,7 @@ export const createMetaService = async (
 };
 
 export const updateMetaService = async (
-  id: string,
+  id: number,
   data: UpdateGoalsType
 ): Promise<MetaFrontend> => {
   try {
@@ -67,7 +67,7 @@ export const updateMetaService = async (
   }
 };
 
-export const deleteMetaService = async (id: string): Promise<void> => {
+export const deleteMetaService = async (id: number): Promise<void> => {
   try {
     const response = await deleteMeta(id);
     return response;

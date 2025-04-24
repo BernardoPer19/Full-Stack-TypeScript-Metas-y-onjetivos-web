@@ -1,7 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MetaFrontend } from "../types/Metas";
-import { getAllGoalsServices } from "../services/UserDataServices";
-import { deleteMeta } from "../api/UserDataRequest";
+import { MetaFrontend, UpdateGoalsType } from "../types/Metas";
+import {
+  deleteMetaService,
+  getAllGoalsServices,
+  updateMetaService,
+} from "../services/UserDataServices";
 
 export const useCRUDGoals = () => {
   const queryClient = useQueryClient();
@@ -22,7 +25,20 @@ export const useCRUDGoals = () => {
     error: deleteGoalError,
     isPending: isDeleting,
   } = useMutation({
-    mutationFn: (id: string) => deleteMeta(id),
+    mutationFn: (id: number) => deleteMetaService(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+    },
+  });
+
+  const {
+    mutate: updateGoal,
+    status: updateeGoalStatus,
+    error: updateGoalError,
+    isPending: isUpdating,
+  } = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateGoalsType }) =>
+      updateMetaService(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["goals"] });
     },
@@ -41,6 +57,13 @@ export const useCRUDGoals = () => {
       status: deleteGoalStatus,
       error: deleteGoalError,
       isPending: isDeleting,
+    },
+
+    update: {
+      updateGoal,
+      updateGoalError,
+      updateeGoalStatus,
+      isUpdating,
     },
   };
 };
